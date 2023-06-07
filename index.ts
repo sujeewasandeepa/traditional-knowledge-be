@@ -33,8 +33,9 @@ app.post("/api/info", async(req:Request, res:Response) => {
 app.get("/api", async (req:Request, res:Response) => {
 	try {
 		const pool = await connectDB();
+        console.log("all good upto now");
 		const checkTableQuery = `
-		SELECT * FROM users_new;
+		SELECT * FROM users;
 	  `;
 		const { rows } = await pool.query(checkTableQuery);
 		console.log(rows);
