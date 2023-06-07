@@ -56,6 +56,23 @@ app.delete("/api/info", async (req:Request, res:Response) => {
     }
 });
 
+// edit an info
+//
+// NOT COMPLETED
+// test and verify everything work as expected. 
+//
+app.put("/api/info", async (req:Request, res:Response) => {
+    try {
+        const id = req.body.id;
+        const client = await connectDB();
+
+        await client.query(`UPDATE info SET title='${req.body.title}', description='${req.body.description}', tags='${req.body.tags}' WHERE info_id = '${id}'`);
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 // get everything from the users
 app.get("/api", async (req:Request, res:Response) => {
 	try {
