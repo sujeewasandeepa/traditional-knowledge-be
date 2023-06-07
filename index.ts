@@ -17,9 +17,8 @@ app.post("/api/info", async(req:Request, res:Response) => {
 	try {
     const information = req.body;
     const createInfoQuery = `
-      INSERT INTO info(id, timestamp, title, author, description, tags) 
-      VALUES ('${information.id}', '${information.timestamp}', '${information.title}',
-        '${information.author}', '${information.description}', '${information.tags}'); 
+      INSERT INTO info(info_id, title, author_id, description, tags) 
+      VALUES ('${information.id}', '${information.title}', '${information.author}', '${information.description}', '${information.tags}'); 
     `;
     console.log(createInfoQuery);
     const client = await connectDB(); 
