@@ -1,3 +1,6 @@
-to create the container: sudo docker run --name my-postgres -e POSTGRES_PASSWORD=adminpassword -p 5432:5432 -d postgres
+To start the database run
+docker-compose up -d 
 
-to start the container: sudo docker start my-postgres
+`-d` is used to run the docker container in the detached mode. 
+It makes the container to run in the background, so we get 
+our terminal to do whatever we want. 
