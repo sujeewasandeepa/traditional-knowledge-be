@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import connectDB from './db';
+import { info } from 'console';
 
 const app: Express = express();
 
@@ -15,13 +16,26 @@ app.get('/', (req: Request, res: Response) => {
 // creating a new info
 app.post("/api/info", async(req:Request, res:Response) => {
 	try {
+
+    let id = '001';
+
+    const client = await connectDB(); 
+    
+    // generating an ID
+    const latestData = await client.query(`SELECT * FROM info ORDER BY timestamp DESC LIMIT 1`); 
+    if (latestData) {
+        let previousID = parseInt(latestData.rows[0].info_id);
+        let newID = previousID + 1;
+        let newIDStr = newID.toString().padStart(3, '0');
+        id = newIDStr;
+    }
+
     const information = req.body;
     const createInfoQuery = `
       INSERT INTO info(info_id, title, author_id, description, tags) 
-      VALUES ('${information.id}', '${information.title}', '${information.author}', '${information.description}', '${information.tags}'); 
+      VALUES ('${id}', '${information.title}', '${information.author}', '${information.description}', '${information.tags}'); 
     `;
     console.log(createInfoQuery);
-    const client = await connectDB(); 
     await client.query(createInfoQuery);
     res.send("Info entered to the system!");
 
@@ -29,10 +43,23 @@ app.post("/api/info", async(req:Request, res:Response) => {
 		console.error(err);
 	}
 });
+
+// delete an info
+app.delete("/api/info", async (req:Request, res:Response) => {
+    try {
+        const id = req.body.id;
+        const client = await connectDB();
+        await client.query(`DELETE FROM info WHERE info_id = '${id}'`);
+        res.send("Info deleted from the database");
+    } catch (err) {
+        console.error(err);
+    }
+});
+
+// get everything from the users
 app.get("/api", async (req:Request, res:Response) => {
 	try {
 		const pool = await connectDB();
-        console.log("all good upto now");
 		const checkTableQuery = `
 		SELECT * FROM users;
 	  `;
