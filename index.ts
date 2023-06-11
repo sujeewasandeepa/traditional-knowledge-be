@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from 'express';
 import connectDB from './db';
 import { info } from 'console';
+import cors from 'cors';
 
 const app: Express = express();
 
@@ -8,6 +9,7 @@ const port = 4000;
 
 // middleware
 app.use(express.json());
+app.use(cors());
 
 app.get('/', (req: Request, res: Response) => {
 	res.send("Express + Typescript server!!");
