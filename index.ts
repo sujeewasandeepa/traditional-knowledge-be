@@ -71,7 +71,7 @@ app.put("/api/info", async (req:Request, res:Response) => {
     } catch (err) {
         console.error(err);
     }
-}
+});
 
 // get everything from the users
 app.get("/api", async (req:Request, res:Response) => {
@@ -87,6 +87,25 @@ app.get("/api", async (req:Request, res:Response) => {
 	} catch (err) {
 		console.error(err);
 	}
+});
+
+// get top 10 latest infos
+app.get("/api/info", async (req:Request, res:Response) => {
+    try {
+        const pool = await connectDB();
+        const getInfosQuery = `
+        SELECT *
+        FROM info
+        ORDER BY timestamp DESC
+        LIMIT 10;
+        `
+        const { rows } = await pool.query(getInfosQuery);
+        console.log(rows);
+        let result = ["latest 10 infos retrieved!", rows];
+        res.send(result);
+    } catch (err) {
+        console.error(err);
+    }
 });
 
 app.listen(port, () => {
