@@ -1,6 +1,5 @@
 import express, { Express, Request, Response } from 'express';
 import connectDB from './db';
-import { info } from 'console';
 import cors from 'cors';
 
 const app: Express = express();
